@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="94a02b32-6ca9-425d-9868-e48422594059" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="muletrainingdemoFlow" doc:id="34d643f7-d2ab-46d6-83c7-80000cef6d64" >
+		<http:listener doc:name="Listener" doc:id="1b8b925f-079b-4360-8506-c5e5512bb29b" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="d111aa07-7b4c-4673-801f-72eeaf7583e3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	        "cid": 100,
+			"firstName": "Bruce",
+			"lastname": "Wayne",
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#["Welcome!" ++ payload.firstName++" "++ payload.lastname    ++"." ++ "Your customer id is " ++ payload.cid++"."]' doc:name="Set Payload" doc:id="6199a1f3-edf2-4b48-a3f6-4feeaec35dc1" />
+	</flow>
+</mule>
