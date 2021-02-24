@@ -16,6 +16,9 @@
 		<app.runtime>4.3.0-20201013</app.runtime>
 		<mule.maven.plugin.version>3.3.5</mule.maven.plugin.version>
 	<munit.version>2.3.1</munit.version>
+	<sonar.sources>src/main/mule</sonar.sources>
+<sonar.tests/>
+	
     </properties>
 
 	<build>
@@ -45,6 +48,27 @@
 				
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.6</version>
+                 <extensions>true</extensions>
+                <configuration>
+                    <serverId>nexus</serverId>
+                    <nexusUrl>http://localhost:8081/nexus/</nexusUrl>
+                    <skipStaging>true</skipStaging>
+                </configuration>
+                <executions>
+                       <execution>
+                         <id>default-deploy</id>
+                         <phase>deploy</phase>
+                         <goals>
+                           <goal>deploy</goal>
+                         </goals>
+                       </execution>
+                </executions>   
+</plugin>
+			
 		<plugin>
                 <groupId>com.mulesoft.munit.tools</groupId>
                 <artifactId>munit-maven-plugin</artifactId>
@@ -97,7 +121,20 @@
             <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
+         <dependency>
+ 			<groupId>org.sonarsource.scanner.maven</groupId>
+ 			<artifactId>sonar-maven-plugin</artifactId>
+ 			<version>3.6.1.1688</version>
+		</dependency>
+        
     </dependencies>
+<distributionManagement>
+    	<snapshotRepository>
+      	<id>mule4sonar</id>
+      	<name>mulerelease</name>
+      	<url>http://localhost:8081/repository/mule4trainingsonar/</url>
+    	</snapshotRepository>
+ </distributionManagement>
 
 	<repositories>
           <repository>
